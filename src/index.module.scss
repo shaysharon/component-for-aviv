@@ -1,0 +1,27 @@
+$hover-color: blue;
+$selected-color:green;
+
+.app {
+    background:red;
+
+    > .title {
+        font-size:72px;
+    }
+    
+    .card {
+        &.selected {
+            background-color:$selected-color;
+        }
+
+        .title {
+            font-size:48px;
+    
+            // &:hover {
+            //     background:$hover-color;
+            // }
+        }
+    }
+    
+}
+
+
