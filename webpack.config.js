@@ -8,62 +8,47 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = () => {
   return {
-    entry: "./src/index.js",
+    entry: "./wrapper.js",
     output: {
+      libraryTarget: 'var',
+      library: 'augmentedC',
       path: path.resolve(__dirname, "dist"),
-      filename: "source.[hash].js",
-      publicPath: "/component/",
+      filename: "augmentedC.min.js",
     },
     module: {
       rules: [
-        { test: /\.(js)$/, use: "babel-loader" },
         {
-          test: /\.module\.s(a|c)ss$/,
-          loader: [
-            MiniCssExtractPlugin.loader,
+            test:   /\.js/,
+            exclude: /node_modules/,
+            use: {
+                loader: 'babel-loader'
+            }
+        },
+        {
+          test: /\.scss$/,
+          use: [
+            'style-loader',
             {
-              loader: "css-loader",
+              loader: 'css-loader',
               options: {
                 modules: true,
-                sourceMap: false,
-              },
+                // localIdentName: '[name]__[local]___[hash:base64:5]',
+                // camelCase: true,
+                sourceMap: false
+              }
             },
             {
-              loader: "sass-loader",
+              loader: 'sass-loader',
               options: {
-                sourceMap: false,
-              },
-            },
-          ],
-        },
-        {
-          test: /\.(css)$/,
-          exclude: /\.module.(s(a|c)ss)$/,
-          use: ["style-loader", "css-loader"],
-        },
-        {
-          test: /\.(png|jp(e*)g|svg|gif)$/,
-          use: [
-            {
-              loader: "url-loader",
-              options: {
-                limit: 8000, // Convert images < 8kb to base64 strings
-                name: "images/[hash]-[name].[ext]",
-              },
-            },
-          ],
-        },
+                sourceMap: false
+              }
+            }
+          ]
+        }
       ],
     },
     mode: "production",
     plugins: [
-      new HtmlWebpackPlugin({
-        template: "public/index.html",
-      }),
-      new MiniCssExtractPlugin({
-        filename: "[name].[hash].css",
-        chunkFilename: "[id].[hash].css",
-      }),
     ],
   };
 };

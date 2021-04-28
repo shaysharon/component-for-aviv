@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styles from './index.module.scss';
 
-function App() {
+function App({color}) {
   return (
-    <div className={styles.app}>App</div>
+    <div className={styles.app} style={{backgroundColor:color}}>App</div>
   );
 }
 
